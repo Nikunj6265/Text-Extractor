@@ -73,11 +73,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'CodeMonk.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-
-
+# Database configuration
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -122,7 +119,7 @@ USE_TZ = True
 # To Use Custom User Model
 AUTH_USER_MODEL = 'text_search_app.User'
 
-
+# REST Framework configuration
 REST_FRAMEWORK = {
     # Enable Session Authentication for App
     'DEFAULT_AUTHENTICATION_CLASSES': [

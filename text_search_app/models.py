@@ -1,22 +1,27 @@
+# Import necessary modules
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from .managers import UserManager
-# Create your models here.
+
+# Custom user model
 class User(AbstractBaseUser):
+    # User fields
     email = models.EmailField(verbose_name='email address', max_length=255, unique=True)
     name = models.CharField(max_length=100)
     dob = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
+    # Manager instance
     objects = UserManager()
 
+    # Field for user identification
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ["name"]
 
+    # Methods for permissions and user details
     def __str__(self):
         return self.email
     
@@ -24,24 +29,20 @@ class User(AbstractBaseUser):
         return self.name
     
     def has_perm(self, perm, obj=None):
-        "Does the user have a specific permission?"
-        # Simplest possible answer: Yes, always
         return True
 
     def has_module_perms(self, app_label):
-        "Does the user have permissions to view the app `app_label`?"
-        # Simplest possible answer: Yes, always
         return True
 
     @property
     def is_staff(self):
-        "Is the user a member of staff?"
-        # Simplest possible answer: All admins are staff
         return self.is_admin
-    
+
+# Paragraph model
 class Paragraph(models.Model):
     text = models.TextField()
 
+# Word model
 class Word(models.Model):
     word = models.CharField(max_length=100)
     paragraph = models.ForeignKey(Paragraph, on_delete=models.CASCADE)

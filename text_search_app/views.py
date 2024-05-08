@@ -1,3 +1,4 @@
+# Import necessary modules
 from django.contrib.auth import authenticate, login, logout
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -13,10 +14,11 @@ from text_search_app.serializers import (
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
-
+# Registration view
 class RegistrationView(APIView):
     permission_classes = [AllowAny]
 
+    # POST method for user registration
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
@@ -26,10 +28,11 @@ class RegistrationView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+# Login view
 class LoginView(APIView):
     permission_classes = [AllowAny]
 
+    # POST method for user login
     def post(self, request):
         email = request.data.get('email')
         password = request.data.get('password')
@@ -43,21 +46,25 @@ class LoginView(APIView):
         else:
             return Response({'detail': 'Email or Password is incorrect.'}, status=status.HTTP_400_BAD_REQUEST)
 
-
+# Logout view
 class LogoutView(APIView):
-
+    
+    # POST method for user logout
     def post(self, request):
         logout(request)
         return Response({'detail': 'Logged out successfully.'}, status=status.HTTP_200_OK)
 
-
+# User detail view
 class UserDetailView(APIView):
+    
+    # GET method to get user details
     def get(self, request):
         serializer = UserSerializer(request.user)
         data = serializer.data
         data['is_staff'] = request.user.is_staff
         return Response(data)
 
+    # PATCH method to update user details
     def patch(self, request):
         serializer = UserSerializer(request.user, data=request.data, partial=True)
         if serializer.is_valid():
@@ -65,10 +72,10 @@ class UserDetailView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-
+# Search paragraphs view
 class SearchParagraphs(APIView):
-
+    
+    # POST method to search for paragraphs containing a word
     def post(self, request, format=None):
         serializer = SearchSerializer(data=request.data)
         if serializer.is_valid():
@@ -80,9 +87,10 @@ class SearchParagraphs(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+# Insert paragraphs view
 class InsertParagraphs(APIView):
-
+    
+    # POST method to insert paragraphs into the database
     def post(self, request, format=None):
         serializer = TextSerializer(data=request.data)
         if serializer.is_valid():
