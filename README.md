@@ -1,4 +1,4 @@
-Codemonk Project
+Codemonk Text-Extractor Project
 ================
 
 This project implements a RESTful API using Django Rest Framework for storing and searching paragraphs of text. Users can register, log in, insert paragraphs of text, and search for specific words within the stored paragraphs.
